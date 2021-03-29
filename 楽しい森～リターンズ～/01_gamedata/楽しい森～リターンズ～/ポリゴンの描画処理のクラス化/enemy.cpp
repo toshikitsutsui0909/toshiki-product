@@ -187,9 +187,6 @@ void CEnemy::Update(void)
 {
 	m_pos = GetPosition();
 
-	CSound *pSound
-		= CManager::GetSound();
-
 	//ÉQÅ[ÉÄÇÃèÓïÒÇéÊìæ
 	CGame *pGame = CManager::GetGame();
 
@@ -242,195 +239,8 @@ void CEnemy::Update(void)
 			}
 		}
 	}
-	//ìGÇÃéÌóﬁÇ≤Ç∆ÇÃê›íËÅià⁄ìÆÅïíeÅj
-	switch (m_type)
-	{
-	//í èÌÇÃìG
-	case TYPE_NORMAL:
-		m_Counter++;
-		if (m_Counter == 30 || m_pos.x >= 1200.0f)
-		{
-			m_move.y *= -1.0f;
-			m_Counter = 0;
-		}
-		if (40 % (rand() % 150+ 30) == 0 && m_pos.x - ENEMY_SIZE_X <= SCREEN_WIDTH)
-		{
-			pSound->Play(CSound::SOUND_LABEL_SE_SHOT);
-			D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
-
-			float fTangent = atan2f(playerPos.y - m_pos.y, playerPos.x - m_pos.x);
-
-			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f), 
-				D3DXVECTOR3(cosf(fTangent) * 7.0f, sinf(fTangent) * 7.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
-		}
-		break;
-
-	//í èÌÇÃìGÇQ
-	case TYPE_NORMAL_2:
-		m_move.y = 0.0f;
-		if (m_pos.x - ENEMY_SIZE_X <= 750.0f)
-		{
-			m_move.y = 3.0f;
-		}
-		if (m_pos.y - ENEMY_SIZE_X >= 450.0f)
-		{
-			m_move.y = 0.0f;
-		}
-		if (m_nCount % 60 == 0 && m_pos.x - ENEMY_SIZE_X <= 750.0f)
-		{
-			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
-				D3DXVECTOR3(-5.0f, 0.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
-		}
-		break;
-
-	//í èÌÇÃìGÇR
-	case TYPE_NORMAL_3:
-		m_move.y = 0.0f;
-		if (m_pos.x - ENEMY_SIZE_X <= 800.0f)
-		{
-			m_move.y = -3.0f;
-		}
-		if (m_pos.y - ENEMY_SIZE_X <= 100.0f)
-		{
-			m_move.y = 0.0f;
-		}
-		if (m_nCount % 50 == 0 && m_pos.x - ENEMY_SIZE_X <= 900.0f)
-		{
-			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
-				D3DXVECTOR3(-5.0f, 0.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
-		}
-		break;
-
-	//í èÌÇÃìGÇS
-	case TYPE_NORMAL_4:
-		m_move.y = 0.0f;
-		if (m_pos.x - ENEMY_SIZE_X <= 400.0f)
-		{
-			m_move.y = 4.0f;
-		}
-		if (m_pos.y - ENEMY_SIZE_X >= 250.0f)
-		{
-			m_move.y = 0.0f;
-			m_move.x = 4.0f;
-		}
-		break;
-
-	//í èÌÇÃìGÇT
-	case TYPE_NORMAL_5:
-		m_move.y = 0.0f;
-		if (m_pos.x - ENEMY_SIZE_X <= 400.0f)
-		{
-			m_move.y = -4.0f;
-		}
-		if (m_pos.y - ENEMY_SIZE_X <= 400.0f)
-		{
-			m_move.y = 0.0f;
-			m_move.x = 4.0f;
-		}
-		if (m_nCount % 50 == 0 && m_pos.x - BOSS_SIZE <= 700.0f)
-		{
-			int num = 2;
-			float fTheta = 20.0f;
-			float fRaddaStep = D3DXToRadian(fTheta);
-			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
-			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
-			{
-				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
-					D3DXVECTOR3(-cosf(Radda) * 5, sinf(Radda) * 4, 0.0f), CBullet::BULLETTYPE_ENEMY_2);
-			}
-		}
-		break;
-
-	//éáÇÃìG
-	case TYPE_HARDTYPE:
-		m_Counter++;
-		m_move.x = -6.0f;
-		m_move.y = 0.0f;
-		if (m_pos.x - ENEMY_SIZE / 2 <= 900.0f)
-		{
-			m_move.x = 0.0f;
-		}
-		if (m_nCount % 50 == 0 && m_pos.x - BOSS_SIZE <= 900.0f)
-		{
-			int num = 2;
-			float fTheta = 20.0f;
-			float fRaddaStep = D3DXToRadian(fTheta);
-			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
-			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
-			{
-				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
-					D3DXVECTOR3(-cosf(Radda) * 5, sinf(Radda) * 4, 0.0f), CBullet::BULLETTYPE_ENEMY_2);
-			}
-		}
-		if (m_Counter >= 270)
-		{
-			m_move.x = 5.0f;
-		}
-		break;
-
-	//É{ÉXìG
-	case TYPE_BOSS:
-		m_move.y = 0.0f;
-		if (m_pos.x - ENEMY_SIZE / 2 <= 1100.0f)
-		{
-			m_move.x = 0.0f;
-		}
-
-		if (50 % (rand() % 100 + 20) == 0 && m_pos.x - BOSS_SIZE <= SCREEN_WIDTH)
-		{
-			pSound->Play(CSound::SOUND_LABEL_SE_SHOT);
-			D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
-			float fTangent = atan2f(playerPos.y - m_pos.y, playerPos.x - m_pos.x);
-			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f), 
-				D3DXVECTOR3(cosf(fTangent) * 7.0f, sinf(fTangent) * 7.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
-		}
-		if (m_nCount % 60 == 0 && m_pos.x - BOSS_SIZE <= SCREEN_WIDTH)
-		{
-			int num = 5;
-			float fTheta = 20.0f;
-			float fRaddaStep = D3DXToRadian(fTheta);
-			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
-			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
-			{
-				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
-					D3DXVECTOR3(-cosf(Radda) * 10, sinf(Radda) * 10, 0.0f),CBullet::BULLETTYPE_ENEMY_2);
-			}
-		}
-		if (m_nCount % 80 == 0 && m_pos.x - BOSS_SIZE <= SCREEN_WIDTH)
-		{
-			int num = 4;
-			float fTheta = 20.0f;
-			float fRaddaStep = D3DXToRadian(fTheta);
-			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
-			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
-			{
-				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
-					D3DXVECTOR3(-cosf(Radda) * 8, sinf(Radda) * 8, 0.0f), CBullet::BULLETTYPE_ENEMY);
-			}
-		}
-		if (m_nLife <= 0)
-		{
-			m_move.y = 1.0f;
-		}
-		if (m_pos.y + BOSS_SIZE / 2 >= SCREEN_HEIGHT - 170.0f)
-		{
-			m_move.y = 0.0f;
-			Hit(m_nDamage);
-		}
-		break;
-	}
-
-	//ìGÇ™âÊñ äOÇ…èoÇΩÇÁè¡Ç∑èàóù
-	if (m_pos.x - ENEMY_SIZE <= -100.0f)
-	{
-		Uninit();
-		return;
-	}
-	if (m_pos.x + ENEMY_SIZE >= SCREEN_WIDTH + 2500.0f)
-	{
-		Uninit();
-		return;
-	}
+	// ìGÇÃà⁄ìÆèàóù
+	EnemyMove();
 }
 
 //-----------------------------------------------------------------------------
@@ -529,5 +339,201 @@ void CEnemy::Hit(int nDamage)
 			}
 			break;
 		}
+	}
+}
+
+void CEnemy::EnemyMove(void)
+{
+	CSound *pSound
+		= CManager::GetSound();
+
+	//ìGÇÃéÌóﬁÇ≤Ç∆ÇÃê›íËÅià⁄ìÆÅïíeÅj
+	switch (m_type)
+	{
+		//í èÌÇÃìG
+	case TYPE_NORMAL:
+		m_Counter++;
+		if (m_Counter == 30 || m_pos.x >= 1200.0f)
+		{
+			m_move.y *= -1.0f;
+			m_Counter = 0;
+		}
+		if (40 % (rand() % 150 + 30) == 0 && m_pos.x - ENEMY_SIZE_X <= SCREEN_WIDTH)
+		{
+			pSound->Play(CSound::SOUND_LABEL_SE_SHOT);
+			D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
+
+			float fTangent = atan2f(playerPos.y - m_pos.y, playerPos.x - m_pos.x);
+
+			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+				D3DXVECTOR3(cosf(fTangent) * 7.0f, sinf(fTangent) * 7.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
+		}
+		break;
+
+		//í èÌÇÃìGÇQ
+	case TYPE_NORMAL_2:
+		m_move.y = 0.0f;
+		if (m_pos.x - ENEMY_SIZE_X <= 750.0f)
+		{
+			m_move.y = 3.0f;
+		}
+		if (m_pos.y - ENEMY_SIZE_X >= 450.0f)
+		{
+			m_move.y = 0.0f;
+		}
+		if (m_nCount % 60 == 0 && m_pos.x - ENEMY_SIZE_X <= 750.0f)
+		{
+			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+				D3DXVECTOR3(-5.0f, 0.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
+		}
+		break;
+
+		//í èÌÇÃìGÇR
+	case TYPE_NORMAL_3:
+		m_move.y = 0.0f;
+		if (m_pos.x - ENEMY_SIZE_X <= 800.0f)
+		{
+			m_move.y = -3.0f;
+		}
+		if (m_pos.y - ENEMY_SIZE_X <= 100.0f)
+		{
+			m_move.y = 0.0f;
+		}
+		if (m_nCount % 50 == 0 && m_pos.x - ENEMY_SIZE_X <= 900.0f)
+		{
+			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+				D3DXVECTOR3(-5.0f, 0.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
+		}
+		break;
+
+		//í èÌÇÃìGÇS
+	case TYPE_NORMAL_4:
+		m_move.y = 0.0f;
+		if (m_pos.x - ENEMY_SIZE_X <= 400.0f)
+		{
+			m_move.y = 4.0f;
+		}
+		if (m_pos.y - ENEMY_SIZE_X >= 250.0f)
+		{
+			m_move.y = 0.0f;
+			m_move.x = 4.0f;
+		}
+		break;
+
+		//í èÌÇÃìGÇT
+	case TYPE_NORMAL_5:
+		m_move.y = 0.0f;
+		if (m_pos.x - ENEMY_SIZE_X <= 400.0f)
+		{
+			m_move.y = -4.0f;
+		}
+		if (m_pos.y - ENEMY_SIZE_X <= 400.0f)
+		{
+			m_move.y = 0.0f;
+			m_move.x = 4.0f;
+		}
+		if (m_nCount % 50 == 0 && m_pos.x - BOSS_SIZE <= 700.0f)
+		{
+			int num = 2;
+			float fTheta = 20.0f;
+			float fRaddaStep = D3DXToRadian(fTheta);
+			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
+			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
+			{
+				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+					D3DXVECTOR3(-cosf(Radda) * 5, sinf(Radda) * 4, 0.0f), CBullet::BULLETTYPE_ENEMY_2);
+			}
+		}
+		break;
+
+		//éáÇÃìG
+	case TYPE_HARDTYPE:
+		m_Counter++;
+		m_move.x = -6.0f;
+		m_move.y = 0.0f;
+		if (m_pos.x - ENEMY_SIZE / 2 <= 900.0f)
+		{
+			m_move.x = 0.0f;
+		}
+		if (m_nCount % 50 == 0 && m_pos.x - BOSS_SIZE <= 900.0f)
+		{
+			int num = 2;
+			float fTheta = 20.0f;
+			float fRaddaStep = D3DXToRadian(fTheta);
+			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
+			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
+			{
+				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+					D3DXVECTOR3(-cosf(Radda) * 5, sinf(Radda) * 4, 0.0f), CBullet::BULLETTYPE_ENEMY_2);
+			}
+		}
+		if (m_Counter >= 270)
+		{
+			m_move.x = 5.0f;
+		}
+		break;
+
+		//É{ÉXìG
+	case TYPE_BOSS:
+		m_move.y = 0.0f;
+		if (m_pos.x - ENEMY_SIZE / 2 <= 1100.0f)
+		{
+			m_move.x = 0.0f;
+		}
+
+		if (50 % (rand() % 100 + 20) == 0 && m_pos.x - BOSS_SIZE <= SCREEN_WIDTH)
+		{
+			pSound->Play(CSound::SOUND_LABEL_SE_SHOT);
+			D3DXVECTOR3 playerPos = CGame::GetPlayer()->GetPos();
+			float fTangent = atan2f(playerPos.y - m_pos.y, playerPos.x - m_pos.x);
+			CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+				D3DXVECTOR3(cosf(fTangent) * 7.0f, sinf(fTangent) * 7.0f, 0.0f), CBullet::BULLETTYPE_ENEMY);
+		}
+		if (m_nCount % 60 == 0 && m_pos.x - BOSS_SIZE <= SCREEN_WIDTH)
+		{
+			int num = 5;
+			float fTheta = 20.0f;
+			float fRaddaStep = D3DXToRadian(fTheta);
+			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
+			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
+			{
+				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+					D3DXVECTOR3(-cosf(Radda) * 10, sinf(Radda) * 10, 0.0f), CBullet::BULLETTYPE_ENEMY_2);
+			}
+		}
+		if (m_nCount % 80 == 0 && m_pos.x - BOSS_SIZE <= SCREEN_WIDTH)
+		{
+			int num = 4;
+			float fTheta = 20.0f;
+			float fRaddaStep = D3DXToRadian(fTheta);
+			float Radda = num % 2 ? -num / 2 * fRaddaStep : (-num / 2 + 0.5f) * fRaddaStep;
+			for (int nCount = 0; nCount <= num; nCount++, Radda += fRaddaStep)
+			{
+				CBullet::Create(m_pos, D3DXVECTOR3(BULLET_SIZE, BULLET_SIZE, 0.0f),
+					D3DXVECTOR3(-cosf(Radda) * 8, sinf(Radda) * 8, 0.0f), CBullet::BULLETTYPE_ENEMY);
+			}
+		}
+		if (m_nLife <= 0)
+		{
+			m_move.y = 1.0f;
+		}
+		if (m_pos.y + BOSS_SIZE / 2 >= SCREEN_HEIGHT - 170.0f)
+		{
+			m_move.y = 0.0f;
+			Hit(m_nDamage);
+		}
+		break;
+	}
+
+	//ìGÇ™âÊñ äOÇ…èoÇΩÇÁè¡Ç∑èàóù
+	if (m_pos.x - ENEMY_SIZE <= -100.0f)
+	{
+		Uninit();
+		return;
+	}
+	if (m_pos.x + ENEMY_SIZE >= SCREEN_WIDTH + 2500.0f)
+	{
+		Uninit();
+		return;
 	}
 }

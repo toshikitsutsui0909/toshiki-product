@@ -49,6 +49,8 @@ public:
 	void Update(void);
 	void Draw(void);
 	void Hit(int nDamage);
+
+	void EnemyMove(void);
 private:
 	static LPDIRECT3DTEXTURE9 m_apTexture[ENEMYTYPE::TYPE_MAX];
 	D3DXVECTOR3 m_pos;		//ç¿ïW
